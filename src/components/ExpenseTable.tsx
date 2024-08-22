@@ -3,15 +3,16 @@ import Expense from '../models/Expense';
 import axiosInstance from '../api/axiosInstance';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { FilterContext, FilterContextValue } from '../App';
+import styles from '../style/expenseTable.module.css'
 
 interface ExpenseRowProps {
   expense: Expense;
+  className?: string;
 }
 
-const ExpenseRow: React.FC<ExpenseRowProps> = ({ expense }) => {
+const ExpenseRow: React.FC<ExpenseRowProps> = ({ expense, className }) => {
   return (
-    <tr key={expense.id}>
-      <td>{expense.id}</td>
+    <tr key={expense.id} className={className}>
       <td>{new Date(expense.date).toLocaleDateString()}</td>
       <td>{expense.category.title}</td>
       <td>{expense.description}</td>
@@ -68,27 +69,29 @@ const ExpenseTable: React.FC = () => {
 
 
   return (
-    <InfiniteScroll
-      dataLength={expenses.length}
-      hasMore={hasMore}
-      next={fetchExpenses}
-      loader={<p>loading...</p>}>
+    <div className={styles['expense-table']}>
       <table>
         <thead>
           <tr>
-            <th>Id</th>
             <th>Date</th>
             <th>Category</th>
             <th>Description</th>
             <th>Price</th>
           </tr>
         </thead>
-        <tbody>
-          {expenses.length > 0 ? expenses.map((expense: Expense) => <ExpenseRow expense={expense}/>) : <></>}
-        </tbody>
       </table>
-    </InfiniteScroll >
-
+      <InfiniteScroll
+        dataLength={expenses.length}
+        hasMore={hasMore}
+        next={fetchExpenses}
+        loader={<p>loading...</p>}>
+        <table>
+          <tbody>
+            {expenses.length > 0 ? expenses.map((expense: Expense, index: number) => <ExpenseRow expense={expense} className={index % 2 === 0 ? styles.even : styles.odd} />) : <></>}
+          </tbody>
+        </table>
+      </InfiniteScroll >
+    </div >
   );
 }
 

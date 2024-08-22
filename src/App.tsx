@@ -2,6 +2,7 @@ import React, { createContext, ReactNode, useState } from 'react';
 import './App.css';
 import ExpenseTable from './components/ExpenseTable';
 import SearchBar from './components/SearchBar';
+import './style/mainPage.css'
 
 export interface FilterContextValue {
   searchTerm: string;
@@ -26,11 +27,17 @@ const FilterProvider = ({ children }: { children: ReactNode }) => {
 const App: React.FC = () => {
   return (
     <FilterProvider>
-      {process.env.REACT_APP_DEBUG ? <h1>Debug Env</h1> : <></>}
+      <div className="main">
+        {process.env.REACT_APP_DEBUG ? <h1>Debug Env</h1> : <></>}
 
-      <SearchBar />
+        <div className='search-box'>
+          <SearchBar />
 
-      <ExpenseTable />
+        </div>
+        <div className='table-box'>
+          <ExpenseTable />
+        </div>
+      </div>
     </FilterProvider>
   );
 }
