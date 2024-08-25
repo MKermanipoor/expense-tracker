@@ -3,7 +3,8 @@ import Expense from '../models/Expense';
 import axiosInstance from '../api/axiosInstance';
 import InfiniteScroll from 'react-infinite-scroll-component';
 import { FilterContext, FilterContextValue } from '../App';
-import styles from '../style/expenseTable.module.css'
+import { Table, TableBody, TableCell, TableHeader, TableRow } from './ui/table';
+import { Badge } from './ui/badge';
 
 interface ExpenseRowProps {
   expense: Expense;
@@ -12,12 +13,13 @@ interface ExpenseRowProps {
 
 const ExpenseRow: React.FC<ExpenseRowProps> = ({ expense, className }) => {
   return (
-    <tr key={expense.id} className={className}>
-      <td>{new Date(expense.date).toLocaleDateString()}</td>
-      <td>{expense.category.title}</td>
-      <td>{expense.description}</td>
-      <td>{expense.price}</td>
-    </tr>
+    <TableRow key={expense.id}>
+      <TableCell className="text-left">{new Date(expense.date).toLocaleDateString()}</TableCell>
+      <TableCell className="text-center">{expense.description}</TableCell>
+      <TableCell className="text-center"><Badge>{expense.category.title}</Badge></TableCell>
+      <TableCell className="text-right">{expense.price}</TableCell>
+    </TableRow>
+
   )
 }
 
@@ -69,28 +71,29 @@ const ExpenseTable: React.FC = () => {
 
 
   return (
-    <div className={styles['expense-table']}>
-      <table>
-        <thead>
-          <tr>
-            <th>Date</th>
-            <th>Category</th>
-            <th>Description</th>
-            <th>Price</th>
-          </tr>
-        </thead>
-      </table>
-      <InfiniteScroll
-        dataLength={expenses.length}
-        hasMore={hasMore}
-        next={fetchExpenses}
-        loader={<p>loading...</p>}>
-        <table>
-          <tbody>
-            {expenses.length > 0 ? expenses.map((expense: Expense, index: number) => <ExpenseRow expense={expense} className={index % 2 === 0 ? styles.even : styles.odd} />) : <></>}
-          </tbody>
-        </table>
-      </InfiniteScroll >
+    <div>
+      <Table>
+        <TableHeader>
+          <TableRow>
+            <TableCell className="text-left">Date</TableCell>
+            <TableCell className="text-center">Description</TableCell>
+            <TableCell className="text-center">Category</TableCell>
+            <TableCell className="text-right">Price</TableCell>
+          </TableRow>
+        </TableHeader>
+      </Table>
+        <InfiniteScroll
+          dataLength={expenses.length}
+          hasMore={hasMore}
+          next={fetchExpenses}
+          loader={<p>loading...</p>}
+          >
+          <Table>
+            <TableBody>
+              {expenses.length > 0 ? expenses.map((expense: Expense, index: number) => <ExpenseRow expense={expense} />) : <></>}
+            </TableBody>
+          </Table>
+        </InfiniteScroll >
     </div >
   );
 }

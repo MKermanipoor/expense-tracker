@@ -2,7 +2,7 @@ import React, { createContext, ReactNode, useState } from 'react';
 import './App.css';
 import ExpenseTable from './components/ExpenseTable';
 import SearchBar from './components/SearchBar';
-import './style/mainPage.css'
+import './style/mainPage.css';
 
 export interface FilterContextValue {
   searchTerm: string;
@@ -28,6 +28,7 @@ const App: React.FC = () => {
   return (
     <FilterProvider>
       <div className="main">
+        
         {process.env.REACT_APP_DEBUG ? <h1>Debug Env</h1> : <></>}
 
         <div className='search-box'>
