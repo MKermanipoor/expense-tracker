@@ -5,30 +5,36 @@ import InfiniteScroll from 'react-infinite-scroll-component';
 import { FilterContext, FilterContextValue } from '../App';
 import { Table, TableBody, TableCell, TableHeader, TableRow } from './ui/table';
 import { Badge } from './ui/badge';
+import ExpenseDialog from './ExpenseDialog';
 
 interface ExpenseRowProps {
   expense: Expense;
-  className?: string;
+  onClick?: () => void;
 }
 
-const ExpenseRow: React.FC<ExpenseRowProps> = ({ expense, className }) => {
+const ExpenseRow: React.FC<ExpenseRowProps> = ({ expense, onClick }) => {
   return (
-    <TableRow key={expense.id}>
-      <TableCell className="text-left">{new Date(expense.date).toLocaleDateString()}</TableCell>
-      <TableCell className="text-center">{expense.description}</TableCell>
-      <TableCell className="text-center"><Badge>{expense.category.title}</Badge></TableCell>
-      <TableCell className="text-right">{expense.price}</TableCell>
+    <TableRow key={expense.id} onClick={() => onClick && onClick()}>
+      <TableCell className="w-1/6 text-left">{new Date(expense.date).toLocaleDateString()}</TableCell>
+      <TableCell className="w-2/6 text-center">{expense.description}</TableCell>
+      <TableCell className="w-2/6 text-center"><Badge>{expense.category.title}</Badge></TableCell>
+      <TableCell className="w-1/6 text-right">{expense.price}</TableCell>
     </TableRow>
 
   )
 }
+
+
 
 const ExpenseTable: React.FC = () => {
   const filterContext: FilterContextValue = useContext(FilterContext);
   const [expenses, setExpenses] = useState<Expense[]>([]);
   const [hasMore, setHasMore] = useState<boolean>(true);
   const page = useRef<number>(0);
+
   const debounceTimeout = useRef<NodeJS.Timeout | null>(null);
+
+  const [selectedExpense, setSelectedEspense] = useState<Expense | null>(null);
 
   const fetchExpenses = () => {
 
@@ -75,25 +81,30 @@ const ExpenseTable: React.FC = () => {
       <Table>
         <TableHeader>
           <TableRow>
-            <TableCell className="text-left">Date</TableCell>
-            <TableCell className="text-center">Description</TableCell>
-            <TableCell className="text-center">Category</TableCell>
-            <TableCell className="text-right">Price</TableCell>
+            <TableCell className="w-1/6 text-left">Date</TableCell>
+            <TableCell className="w-2/6 text-center">Description</TableCell>
+            <TableCell className="w-2/6 text-center">Category</TableCell>
+            <TableCell className="w-1/6 text-right">Price</TableCell>
           </TableRow>
         </TableHeader>
       </Table>
-        <InfiniteScroll
-          dataLength={expenses.length}
-          hasMore={hasMore}
-          next={fetchExpenses}
-          loader={<p>loading...</p>}
-          >
-          <Table>
-            <TableBody>
-              {expenses.length > 0 ? expenses.map((expense: Expense, index: number) => <ExpenseRow expense={expense} />) : <></>}
-            </TableBody>
-          </Table>
-        </InfiniteScroll >
+      <InfiniteScroll
+        dataLength={expenses.length}
+        hasMore={hasMore}
+        next={fetchExpenses}
+        loader={<p>loading...</p>}
+      >
+        <Table>
+          <TableBody>
+            {expenses.length > 0 &&
+              expenses.map((expense: Expense) =>
+                <ExpenseRow expense={expense}
+                  onClick={() => setSelectedEspense(expense)} />
+              )}
+          </TableBody>
+        </Table>
+      </InfiniteScroll >
+      <ExpenseDialog expense={selectedExpense} onClose={() => setSelectedEspense(null)}/>
     </div >
   );
 }
