@@ -6,7 +6,7 @@ import { testExpoenseTypes } from '../testData';
 const axiosInstance = axios.create()
 
 if (process.env.REACT_APP_DEBUG) {
-    const mock = new MockAdapter(axiosInstance, { delayResponse: 500 });
+    const mock = new MockAdapter(axiosInstance, { delayResponse: 1500 });
 
     mock.onGet("/").reply((config): [number] | [number, Expense[]] => {
         if (config.params?.page && config.params.page > 5) {

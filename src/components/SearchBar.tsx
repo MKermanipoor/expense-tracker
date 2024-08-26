@@ -1,5 +1,5 @@
 import { useContext } from "react";
-import { FilterContext, FilterContextValue } from "../App";
+import { FilterContext, FilterContextValue } from "../Routes/Expenses";
 import styles from "../style/searchBar.module.css"
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faSearch } from '@fortawesome/free-solid-svg-icons';

@@ -2,10 +2,11 @@ import React, { useContext, useEffect, useRef, useState } from 'react';
 import Expense from '../models/Expense';
 import axiosInstance from '../api/axiosInstance';
 import InfiniteScroll from 'react-infinite-scroll-component';
-import { FilterContext, FilterContextValue } from '../App';
+import { FilterContext, FilterContextValue } from '../Routes/Expenses';
 import { Table, TableBody, TableCell, TableHeader, TableRow } from './ui/table';
 import { Badge } from './ui/badge';
 import ExpenseDialog from './ExpenseDialog';
+import { Skeleton } from './ui/skeleton';
 
 interface ExpenseRowProps {
   expense: Expense;
@@ -92,7 +93,7 @@ const ExpenseTable: React.FC = () => {
         dataLength={expenses.length}
         hasMore={hasMore}
         next={fetchExpenses}
-        loader={<p>loading...</p>}
+        loader={<Skeleton className='h-16 w-full rounded'/>}
       >
         <Table>
           <TableBody>
