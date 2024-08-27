@@ -7,19 +7,11 @@ interface ContentProps {
 
 const Content: React.FC<ContentProps> = ({ children }) => {
     return (
-        <div style={styles.content}>
+        <div className='ml-48 mt-12 p-2'>
             {children}
             <Outlet />
         </div>
     );
-};
-
-const styles = {
-    content: {
-        marginLeft: '220px', // Offset for the sidebar
-        padding: '20px',
-        height: '100vh',
-    },
 };
 
 export default Content;
