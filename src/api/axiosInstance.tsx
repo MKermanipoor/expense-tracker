@@ -22,21 +22,32 @@ if (process.env.REACT_APP_DEBUG) {
             values.push({
                 "id": String(i),
                 "category": testExpoenseTypes[Math.floor(Math.random() * (testExpoenseTypes.length))],
-                "store": "store " + (i + 1) + (config.params?.search ? " " + config.params?.search : ""),
+                "store": Math.random() > 0.5 ? "store " + (i + 1) : undefined,
                 "price": Math.floor(Math.random() * (1000 - 9) + 10),
                 "date": 2024 + "-" + 8 + "-" + 1,
                 "items": Array.from({ length: Math.floor(Math.random() * 5) }, (value, index) => {
                     return {
-                        id: String(i) + '_' + index,
+                        id: 'item' + '_' + i + '_' + index,
                         title: 'item ' + index,
                         price: Math.random() > 0.8 ? Math.floor(Math.random() * (50 - 5) + 5) / 10 : undefined,
                         tag: Math.random() > 0.5 ? 'tag' : undefined,
+                    }
+                }),
+                "tags": Array.from({ length: Math.floor(Math.random() * 15) }, (value, index) => {
+                    return {
+                        id: 'item' + '_' + i + '_' + index,
+                        title: 'tag ' + index
                     }
                 })
             })
             if (values[values.length - 1].items?.length === 0) {
                 values[values.length - 1].items = undefined
             }
+
+            if (values[values.length - 1].tags?.length === 0) {
+                values[values.length - 1].tags = undefined
+            }
+
         }
 
         return [200, values];
