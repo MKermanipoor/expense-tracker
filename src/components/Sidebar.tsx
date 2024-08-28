@@ -32,7 +32,7 @@ const Sidebar: React.FC = () => {
       <nav>
         <ul className='list-none'>
           {items.map((item: SidebarItem) => (
-            <li className={'text-lg mb-0.5 ' + (activeItem === item.title ? 'bg-blue-500' : 'hover:bg-blue-500')}>
+            <li className={'text-lg mb-0.5 ' + (activeItem === item.title ? 'bg-blue-500' : 'hover:bg-blue-500')} key={item.title}>
               <Link to={item.path} className='p-3 w-full flex items-center' onClick={() => setActiveItem(item.title)}>
                 <item.icon className='mr-2' />{item.title}
               </Link>

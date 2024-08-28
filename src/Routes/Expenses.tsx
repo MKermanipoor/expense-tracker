@@ -1,5 +1,5 @@
 import { createContext, ReactNode, useState } from 'react';
-import ExpenseTable from '../components/ExpenseTable';
+import ExpensesList from '../components/ExpensesList';
 import SearchBar from '../components/SearchBar';
 
 export interface FilterContextValue {
@@ -26,7 +26,7 @@ const Expenses: React.FC = () => {
     return (
         <FilterProvider>
             <SearchBar />
-            <ExpenseTable />
+            <ExpensesList />
         </FilterProvider>
     )
 }
